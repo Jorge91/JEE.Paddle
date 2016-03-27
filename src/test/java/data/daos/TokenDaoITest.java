@@ -3,6 +3,9 @@ package data.daos;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.Calendar;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,22 @@ public class TokenDaoITest {
         User user = (User) daosService.getMap().get("u4");
         assertEquals(token, tokenDao.findByUser(token.getUser()));
         assertNull(tokenDao.findByUser(user));
+    }
+    
+    @Test
+    public void testDeleteExpiredTokens() {
+    	assertEquals(tokenDao.count(), 4);
+    	List<Token> allTokens = tokenDao.findAll();
+    	Calendar expiredDate = Calendar.getInstance();
+    	expiredDate.add(Calendar.HOUR, -1);
+    	
+		for (Token t:allTokens) {
+			t.setExpirationDate(expiredDate);
+			tokenDao.save(t);
+		}	
+		tokenDao.deleteExpiredTokens();
+		
+		assertEquals(tokenDao.count(), 0);
     }
 
 }
