@@ -2,6 +2,7 @@ package data.daos;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import data.entities.Court;
 import data.entities.Reserve;
 import data.entities.Role;
 import data.entities.Token;
+import data.entities.Training;
 import data.entities.User;
 import data.services.DataService;
 
@@ -39,6 +41,9 @@ public class DaosService {
 
     @Autowired
     private DataService genericService;
+    
+    @Autowired
+    private TrainingDao trainingDao;
 
     private Map<String, Object> map;
 
@@ -65,6 +70,9 @@ public class DaosService {
         for (int i = 0; i < 4; i++) {
             date.add(Calendar.HOUR_OF_DAY, 1);
             reserveDao.save(new Reserve(courtDao.findOne(i+1), users[i], date));
+            date.add(Calendar.HOUR_OF_DAY, -2);
+            trainingDao.save(new Training(courtDao.findOne(i+1), date, users[i], 
+            		Collections.<User>emptyList()));
         }
     }
 
