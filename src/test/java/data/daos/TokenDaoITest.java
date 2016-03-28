@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import config.PersistenceConfig;
 import config.TestsPersistenceConfig;
+import data.entities.Authorization;
+import data.entities.Role;
 import data.entities.Token;
 import data.entities.User;
 
@@ -26,6 +28,12 @@ public class TokenDaoITest {
 
     @Autowired
     private DaosService daosService;
+    
+    @Autowired
+    private UserDao userDao;
+	
+	@Autowired
+    private AuthorizationDao authorizationDao;
 
     @Test
     public void testFindByUser() {
@@ -37,18 +45,27 @@ public class TokenDaoITest {
     
     @Test
     public void testDeleteExpiredTokens() {
-    	assertEquals(tokenDao.count(), 4);
-    	List<Token> allTokens = tokenDao.findAll();
-    	Calendar expiredDate = Calendar.getInstance();
-    	expiredDate.add(Calendar.HOUR, -1);
+    	int initial = (int) tokenDao.count();
+    	assertEquals(initial, tokenDao.count());
     	
-		for (Token t:allTokens) {
-			t.setExpirationDate(expiredDate);
-			tokenDao.save(t);
+    	User user = (User) daosService.getMap().get("u4");
+    	
+    	Token token = new Token(user);
+        Calendar finishDate = Calendar.getInstance();
+        finishDate.add(Calendar.HOUR, -5);
+        token.setExpirationDate(finishDate);
+        tokenDao.save(token);
+        assertEquals(initial + 1, tokenDao.count());
+
+        List<Token> allTokens = tokenDao.findAll();
+        int counter = 0;
+		for (Token t:allTokens) {	
+			if (t.isTokenExpired()) counter++;
 		}	
+        
 		tokenDao.deleteExpiredTokens();
 		
-		assertEquals(tokenDao.count(), 0);
+		assertEquals(initial + 1 - counter, tokenDao.count());
     }
 
 }
