@@ -8,7 +8,7 @@ import data.entities.User;
 public interface TokenDao extends JpaRepository<Token, Integer> {
 
     Token findByUser(User user);
-
 	void deleteExpiredTokens();
+	Token findByValue(String value);
     
 }
