@@ -36,23 +36,23 @@ public class TrainingResource {
         }
     }
     
-    @RequestMapping(method = RequestMethod.DELETE)
-    public void deleteTraining(@RequestParam int trainingId) throws InvalidTrainingIdException { 
+    @RequestMapping(value="/{trainingId}/", method = RequestMethod.DELETE)
+    public void deleteTraining(@PathVariable int trainingId) throws InvalidTrainingIdException { 
     	if (!trainingController.deleteTraining(trainingId)) {
             throw new InvalidTrainingIdException();
         }
     }
     
-    @RequestMapping(value="{trainingId}/" + Uris.STUDENT, method = RequestMethod.POST)
-    public void addStudent(@PathVariable("trainingId") int trainingId, @RequestBody String studentUsername) throws ErrorAddingStudentException { 
+    @RequestMapping(value="/{trainingId}" + Uris.STUDENT, method = RequestMethod.POST)
+    public void addStudent(@PathVariable int trainingId, @RequestBody String studentUsername) throws ErrorAddingStudentException { 
     	if (!trainingController.addStudent(studentUsername, trainingId)) {
     		throw new ErrorAddingStudentException();
     	}	
     }
     
-    @RequestMapping(value="{trainingId}/" + Uris.STUDENT, method = RequestMethod.POST)
-    public void deleteStudent(@PathVariable("trainingId") int trainingId, @RequestBody String studentUsername) throws ErrorDeletingStudentException { 
-    	if (!trainingController.deleteStudent(studentUsername, trainingId)) {
+    @RequestMapping(value="/{trainingId}" + Uris.STUDENT + "/{studentId}/", method = RequestMethod.DELETE)
+    public void deleteStudent(@PathVariable("trainingId") int trainingId, @PathVariable("trainingId") int studentId) throws ErrorDeletingStudentException { 
+    	if (!trainingController.deleteStudent(studentId, trainingId)) {
     		throw new ErrorDeletingStudentException();
     	}	
     }
@@ -73,7 +73,7 @@ public class TrainingResource {
     	if (trainingWrapper == null) {
     		throw new InvalidTrainingIdException();
     	} else {
-    		return trainingController.getTraining(trainingId);
+    		return trainingWrapper;
     	}
     }
     
