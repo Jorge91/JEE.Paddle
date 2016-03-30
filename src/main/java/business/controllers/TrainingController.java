@@ -44,7 +44,7 @@ public class TrainingController {
 	}
 	
 	public boolean deleteTraining(int trainingId) {
-		return trainingDao.deleteTraining(trainingDao.getOne(trainingId));
+		return trainingDao.deleteTraining(trainingDao.findOne(trainingId));
 		
 	}
 	
@@ -55,10 +55,10 @@ public class TrainingController {
 				);
 	}
 	
-	public boolean deleteStudent(String username, int trainingId) {
+	public boolean deleteStudent(int studentId, int trainingId) {
 		return trainingDao.deleteStudent(
 				trainingDao.getOne(trainingId), 
-				userDao.findByUsernameOrEmail(username)
+				userDao.findOne(studentId)
 				);
 	}
 	
