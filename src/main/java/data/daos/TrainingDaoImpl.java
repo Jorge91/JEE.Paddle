@@ -40,7 +40,7 @@ public class TrainingDaoImpl implements TrainingDaoExtended {
 		trainingDao.delete(training);
 		Reserve reserve = reserveDao.findByCourtAndDate(training.getCourt(), training.getStartDate());
 		reserveDao.delete(reserve);
-		return false;
+		return true;
 	}
 
 	@Override
