@@ -36,7 +36,7 @@ public class TrainingResource {
         }
     }
     
-    @RequestMapping(value="/{trainingId}/", method = RequestMethod.DELETE)
+    @RequestMapping(value="/{trainingId}", method = RequestMethod.DELETE)
     public void deleteTraining(@PathVariable int trainingId) throws InvalidTrainingIdException { 
     	if (!trainingController.deleteTraining(trainingId)) {
             throw new InvalidTrainingIdException();
@@ -50,7 +50,7 @@ public class TrainingResource {
     	}	
     }
     
-    @RequestMapping(value="/{trainingId}" + Uris.STUDENT + "/{studentId}/", method = RequestMethod.DELETE)
+    @RequestMapping(value="{trainingId}" + Uris.STUDENT + "/" + "{studentId}", method = RequestMethod.DELETE)
     public void deleteStudent(@PathVariable("trainingId") int trainingId, @PathVariable("trainingId") int studentId) throws ErrorDeletingStudentException { 
     	if (!trainingController.deleteStudent(studentId, trainingId)) {
     		throw new ErrorDeletingStudentException();
