@@ -3,12 +3,17 @@ package business.wrapper;
 import java.util.Calendar;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import data.entities.Court;
 import data.entities.User;
 
 public class TrainingWrapper {
 	
+	private int trainingId;
 	private Court court;
+	
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Calendar startDate;
 	private User trainer;
 	private List<User> students;
@@ -17,11 +22,12 @@ public class TrainingWrapper {
 		
 	}
 	
-	public TrainingWrapper(Court court, Calendar startDate, User trainer) {
+	public TrainingWrapper(int trainingId, Court court, Calendar startDate, User trainer) {
 		super();
 		this.court = court;
 		this.startDate = startDate;
 		this.trainer = trainer;
+		this.trainingId = trainingId;
 	}
 	public Court getCourt() {
 		return court;
@@ -47,6 +53,11 @@ public class TrainingWrapper {
 	public void setStudents(List<User> students) {
 		this.students = students;
 	}
+
+	public int getTrainingId() {
+		return trainingId;
+	}
+
 
 	@Override
 	public String toString() {
