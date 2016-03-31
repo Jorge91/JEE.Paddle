@@ -98,7 +98,13 @@ public class TrainingResourceFunctionalTesting {
 		String token = restService.loginTrainer();
 		
 		User trainer = userDao.findByUsernameOrEmail("user_trainer");
-		TrainingWrapper trainingWrapper = new TrainingWrapper(courtDao.findOne(1), (Calendar) dateForTesting().clone(), trainer);
+		List<Training> trainings = trainingDao.findAll();
+		int maxId = 0;
+		for (Training t:trainings) {
+			if (t.getId()>maxId) maxId = t.getId();
+		}
+			
+		TrainingWrapper trainingWrapper = new TrainingWrapper(maxId+1, courtDao.findOne(1), (Calendar) dateForTesting().clone(), trainer);
 		new RestBuilder<Object>(this.restService.URL).path(Uris.TRAININGS).body(trainingWrapper).basicAuth(token, "").post().build();
 		
 		assertEquals(trainingDao.findAll().size(), initialTrainings + 1);
@@ -106,7 +112,7 @@ public class TrainingResourceFunctionalTesting {
 	}
 	
 	@Test
-	public void testDeleteTraining() {
+	public void testDeleteTraining() { //fails
 		int initialTrainings = trainingDao.findAll().size();
 		String token = restService.loginTrainer();
 		Training training = trainingDao.findAll().get(2);
@@ -141,7 +147,7 @@ public class TrainingResourceFunctionalTesting {
 	}
 	
 	@Test
-	public void testAddStudent() {
+	public void testAddStudent() { //fails
 		String token = restService.loginTrainer();
 		Training training = trainingDao.findAll().get(0);
 		int trainingId = training.getId();
@@ -149,13 +155,13 @@ public class TrainingResourceFunctionalTesting {
 		User user = userDao.findAll().get(0);
 		int userId = user.getId();
 		String studentUsername = user.getUsername();
-		System.out.println("---testAddStudent----");
-		new RestBuilder<String>(this.restService.URL).path(Uris.TRAININGS + "/" + trainingId + Uris.STUDENT).clazz(String.class).body(studentUsername).basicAuth(token, "").post().build();
-		System.out.println("---testAddStudent----");
+		System.out.println(Uris.TRAININGS + "/" + trainingId + Uris.STUDENT);
+		
+		new RestBuilder<String>(this.restService.URL).path(Uris.TRAININGS + "/" + trainingId + Uris.STUDENT + "/").clazz(String.class).body(studentUsername).basicAuth(token, "").post().build();
 	}
 	
 	@Test
-	public void deleteStudent() {
+	public void deleteStudent() { //fails
 		String token = restService.loginTrainer();
 		User user = userDao.findAll().get(0);
 		int userId = user.getId();
@@ -165,9 +171,7 @@ public class TrainingResourceFunctionalTesting {
 		int trainingId = training.getId();
 		
 		String studentUsername = user.getUsername();
-		System.out.println("---deleteStudent----");
 		new RestBuilder<String>(this.restService.URL).path(Uris.TRAININGS).pathId(trainingId).path(Uris.STUDENT).pathId(userId).clazz(String.class).basicAuth(token, "").delete().build();
-		System.out.println("---deleteStudent----");
 	}
 	
 }
