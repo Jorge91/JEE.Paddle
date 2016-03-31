@@ -1,17 +1,14 @@
 package business.controllers;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import business.wrapper.TrainingWrapper;
-import business.wrapper.UserWrapper;
 import data.daos.TrainingDao;
 import data.daos.UserDao;
-import data.entities.Court;
 import data.entities.Training;
 
 @Controller
@@ -31,7 +28,7 @@ public class TrainingController {
     }
 	
 	private TrainingWrapper trainingWrapperFromTraining(Training training) {
-		return new TrainingWrapper(training.getCourt(), training.getStartDate(), training.getTrainer());
+		return new TrainingWrapper(training.getId(), training.getCourt(), training.getStartDate(), training.getTrainer());
 		
 	}
 	
