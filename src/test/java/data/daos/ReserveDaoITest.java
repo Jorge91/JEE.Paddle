@@ -2,7 +2,6 @@ package data.daos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.util.Calendar;
 
@@ -48,7 +47,7 @@ public class ReserveDaoITest {
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
         assertNotNull(reserveDao.findByCourtAndDate(courtDao.findOne(1), date));
-        assertNull(reserveDao.findByCourtAndDate(courtDao.findOne(2), date));
+        assertNotNull(reserveDao.findByCourtAndDate(courtDao.findOne(2), date));
     }
 
 }

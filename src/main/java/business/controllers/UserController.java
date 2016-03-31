@@ -1,5 +1,8 @@
 package business.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -38,4 +41,25 @@ public class UserController {
             return false;
         }
     }
+    
+    public List<UserWrapper> getUsers() {
+        List<UserWrapper> userWrappers = new ArrayList<>();
+        for (User u:userDao.findAll()) {
+            userWrappers.add(new UserWrapper(u.getUsername(), u.getEmail(), u.getPassword(), u.getBirthDate()));
+        }
+        return userWrappers;
+    }
+    
+    public UserWrapper getUser(String username) {
+        User user = userDao.findByUsernameOrEmail(username);
+        UserWrapper userWrapper = new UserWrapper(user.getUsername(), user.getEmail(), user.getPassword(), user.getBirthDate());
+        return userWrapper;
+    }
+    
+    public User getUserInstance(String username) {
+        return userDao.findByUsernameOrEmail(username);
+    }
+    
+   
+    
 }
