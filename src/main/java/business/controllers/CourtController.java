@@ -47,6 +47,14 @@ public class CourtController {
         }
         return courtStateList;
     }
+    
+    public CourtState getCourt(int id) {
+    	return new CourtState(courtDao.findOne(id));
+    }
+    
+    public Court getCourtInstance(int id) {
+    	return courtDao.findOne(id);
+    }
 
     public boolean exist(int courtId) {
         return courtDao.findOne(courtId) != null;
