@@ -2,27 +2,17 @@ package api;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.client.HttpClientErrorException;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import config.PersistenceConfig;
 import config.TestsPersistenceConfig;
@@ -32,14 +22,11 @@ import data.daos.TrainingDao;
 import data.daos.UserDao;
 import data.entities.Authorization;
 import data.entities.Court;
-import data.entities.Reserve;
 import data.entities.Role;
 import data.entities.Training;
 import data.entities.User;
 import business.api.Uris;
 import business.wrapper.TrainingWrapper;
-import business.wrapper.UserWrapper;
-import business.wrapper.UserWrapperBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceConfig.class, TestsPersistenceConfig.class})
@@ -117,12 +104,8 @@ public class TrainingResourceFunctionalTesting {
 		String token = restService.loginTrainer();
 		Training training = trainingDao.findAll().get(2);
 		int trainingId = training.getId();
-		
-		System.out.println("--------testDeleteTraining--------");
-		
+				
 		new RestBuilder<Object>(RestService.URL).path(Uris.TRAININGS + "/" + trainingId).basicAuth(token, "").delete().build();
-		
-		System.out.println("--------testDeleteTraining--------");
 		assertEquals(trainingDao.findAll().size(), initialTrainings - 1);	
 	}
 	
@@ -153,7 +136,7 @@ public class TrainingResourceFunctionalTesting {
 		int trainingId = training.getId();
 		
 		User user = userDao.findAll().get(0);
-		int userId = user.getId();
+
 		String studentUsername = user.getUsername();
 		System.out.println(Uris.TRAININGS + "/" + trainingId + Uris.STUDENT);
 		
@@ -170,7 +153,6 @@ public class TrainingResourceFunctionalTesting {
 		training.addStudent(user);
 		int trainingId = training.getId();
 		
-		String studentUsername = user.getUsername();
 		new RestBuilder<String>(this.restService.URL).path(Uris.TRAININGS).pathId(trainingId).path(Uris.STUDENT).pathId(userId).clazz(String.class).basicAuth(token, "").delete().build();
 	}
 	

@@ -1,7 +1,6 @@
 package data.daos;
 
 import java.util.Calendar;
-import java.util.List;
 
 import data.entities.Court;
 import data.entities.Training;

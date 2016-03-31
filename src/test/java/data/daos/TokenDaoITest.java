@@ -14,8 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import config.PersistenceConfig;
 import config.TestsPersistenceConfig;
-import data.entities.Authorization;
-import data.entities.Role;
 import data.entities.Token;
 import data.entities.User;
 
