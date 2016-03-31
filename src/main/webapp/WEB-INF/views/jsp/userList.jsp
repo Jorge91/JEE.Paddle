@@ -16,7 +16,6 @@
 				<th>Username</th>
 				<th>Email</th>
 				<th>Password</th>
-				<th>#</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,7 +24,7 @@
 					<td>${user.username}</td>
 					<td>${user.email}</td>
 					<td>${user.password}</td>
-					<td><a href="<c:url value='/delete-user/${user.username}'/>" class="btn btn-danger">delete</a></td>
+					
 				</tr>
 			</c:forEach>
 		</tbody>
